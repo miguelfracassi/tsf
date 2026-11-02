@@ -97,14 +97,23 @@ function openES(code){
     es.onopen=()=>dispatch("__open",{});
     es.onmessage=ev=>{try{const j=JSON.parse(ev.data);if(j.event!=="message")return;const m=JSON.parse(j.message);if(m.id===ME)return;dispatch(m.t,m.d||{})}catch(e){}}}catch(e){}
 }
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&CODE)openES(CODE)});
-window.addEventListener("online",()=>{if(CODE)openES(CODE)});
-window.addEventListener("pageshow",()=>{if(CODE)openES(CODE)});
+let hiddenAt=0,POLL=true,pollT=null;
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){hiddenAt=Date.now();return}
+  if(CODE&&(Date.now()-hiddenAt>3000||!es||es.readyState===2))openES(CODE)});
+window.addEventListener("online",()=>{if(CODE&&(!es||es.readyState===2))openES(CODE)});
+function startPoll(code){
+  const seen=new Set();clearInterval(pollT);POLL=true;
+  pollT=setInterval(()=>{if(!POLL||CODE!==code)return;
+    fetch(NTFY+code+"/json?poll=1&since=10s").then(r=>r.text()).then(t=>{
+      t.split("\n").forEach(l=>{if(!l.trim())return;
+        try{const j=JSON.parse(l);if(j.event!=="message"||seen.has(j.id))return;seen.add(j.id);
+          const m=JSON.parse(j.message);if(m.id===ME)return;dispatch(m.t,m.d||{})}catch(e){}})}).catch(()=>{})},4000)}
 function sendTela(){send("tela",{t:Date.now(),sid:SID,last:LAST,voting:!!VIEW,v:VIEW})}
 async function connect(code){
   CODE=code;handlers={};
   try{bc=new BroadcastChannel("tsf"+code);bc.onmessage=e=>dispatch(e.data.t,e.data.d)}catch(e){}
-  openES(code);
+  openES(code);startPoll(code);
   try{
     const r=await claude.use("room");
     if(r){room=await r.join("tsf-"+code);
@@ -157,7 +166,7 @@ async function mesario(){
   const code=String(Math.floor(1000+Math.random()*9000));
   await connect(code);
   let linked=false,cpf="",found=null,stage="cpf",msg="",n=0,cur="",view=null,viewKey="",lastT=0;
-  on("hello",()=>{linked=true;send("ack",{});render()});
+  on("hello",()=>{linked=true;POLL=false;send("ack",{});render()});
   const voltar=()=>{stage="cpf";cpf="";found=null;msg="";cur="";view=null;viewKey="";render()};
   on("iniciado",()=>{if(stage==="liberando"){stage="votando";render()}});
   on("fim",()=>{if(stage==="liberando"||stage==="votando")voltar()});
@@ -213,7 +222,7 @@ async function ligar(code){
   dev("JUSTIÇA ELEITORAL<span>CONEXÃO</span>",`<div class="bd one"><div><p class="seu">Conectando ao terminal</p><div class="big">TSF - ${code}</div></div></div>`);
   await connect(code);
   let ok=false,tries=0,voting=false;const usados=new Set();
-  on("ack",()=>{if(ok)return;ok=true;espera()});
+  on("ack",()=>{if(ok)return;ok=true;POLL=false;espera()});
   on("liberar",d=>{if(voting||usados.has(d.sid))return;usados.add(d.sid);SID=d.sid;voting=true;[0,1000,2000].forEach(ms=>setTimeout(()=>send("iniciado",{}),ms));votar(d.nome||"ELEITOR")});
   const hi=()=>{if(ok)return;send("hello",{});if(++tries<30)setTimeout(hi,2000);else{dev("JUSTIÇA ELEITORAL<span>ERRO</span>",`<div class="bd one"><div><p class="nm">Não conectou</p><p class="mut">Confira o código, se o mesário está aberto e se os dois aparelhos têm internet.</p></div></div><div class="ft"><i class="g">CONFIRMA</i> tentar de novo</div>`);keyFn=e=>{if(e.key==="Enter"){urna();return true}}}};
   const vistas=new Set();
