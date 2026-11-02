@@ -7,14 +7,14 @@ Arquivos:
 
 Abra mesario.html em um aparelho e urna.html no outro.
 
-ATENÇÃO: a conexão entre dois aparelhos diferentes só funciona na versão
-publicada no Claude (usa a sala em tempo real). Fora de lá, mesário e urna
-só se conectam entre abas do MESMO navegador/computador, e as duas páginas
-precisam ser abertas a partir da mesma pasta/origem.
+CONEXÃO: mesário e urna se falam pela internet (relé público ntfy.sh), então
+funcionam em aparelhos diferentes, abrindo os arquivos de qualquer lugar.
+Os dois aparelhos precisam estar com internet. Em abas do mesmo navegador
+também conecta direto, sem internet.
 
 CPFs, candidatos e partidos ficam no começo do <script> de cada página.
 
 NOVIDADES:
-- Visual novo (carcaça escura, tela com faixa verde/azul/amarela, teclas arredondadas).
+- Visual simples, preto e branco.
 - Em cada cargo, antes de digitar, a tela mostra os candidatos um por vez
   (NOME - 0000), com fade, até o eleitor começar a digitar o número.
