@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Urna - TSF</title>
+<style>
+:root{--pg:#0a1020;--cas:#2a3042;--cas2:#141824;--scr:#f3f6f1;--ink:#0f1a14;--mut:#5c6a62;--key:#2f3547;--ln:#0f1a14;--ok:#16a34a;--bad:#dc2626;--lar:#f59e0b;--azul:#1d4ed8;--am:#facc15;color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#0a1020}}
+:root[data-theme="dark"]{--pg:#0a1020}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 20% 0,#1b2a55 0,var(--pg) 60%) fixed;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:14px}
+.dev{width:min(980px,100%);display:grid;grid-template-columns:1fr 260px;gap:20px;padding:22px;border-radius:28px;background:linear-gradient(160deg,var(--cas),var(--cas2));border:1px solid #ffffff1f;box-shadow:0 30px 70px #000b,inset 0 1px 0 #ffffff26}
+.mes{grid-template-columns:1fr 240px}
+.scr{background:var(--scr);border:4px solid #04060c;border-radius:16px;min-height:480px;display:flex;flex-direction:column;box-shadow:0 0 0 2px #ffffff14,inset 0 0 36px #0002;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:linear-gradient(90deg,#0f7a3a,var(--azul));border-bottom:3px solid var(--am);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em}
+.top.m{background:linear-gradient(90deg,#334155,#0f766e)}
+.bd{flex:1;display:grid;grid-template-columns:1fr 170px;gap:14px;padding:18px 22px}
+.bd.one{grid-template-columns:1fr;align-content:center;text-align:center}
+.seu{font-size:13px;letter-spacing:.06em;color:var(--mut);margin:0 0 2px}
+.cargo{font-size:36px;font-weight:800;margin:0 0 14px;line-height:1.1}
+.bx{display:flex;gap:8px;margin-bottom:14px;justify-content:inherit}
+.bx span{width:42px;height:56px;border:2px solid var(--ln);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;background:#fff}
+.bx span.c{box-shadow:inset 0 -5px 0 var(--azul);animation:pisca 1s steps(2) infinite}
+@keyframes pisca{50%{box-shadow:inset 0 -5px 0 transparent}}
+.inf{font-size:19px;line-height:1.7;min-height:96px}
+.inf b{display:inline-block;min-width:84px;color:var(--mut);font-weight:600}
+.err{color:var(--bad);font-weight:800;min-height:24px;margin:4px 0}
+.nulo{font-size:22px;font-weight:800;color:var(--bad)}
+.branco{font-size:40px;font-weight:800;letter-spacing:.04em}
+.ft{border-top:2px solid #0f1a1422;margin:0 22px;padding:10px 0 14px;font-size:13px;line-height:1.9}
+.ft i{font-style:normal;font-weight:800;padding:2px 8px;border-radius:6px;color:#fff}
+.g{background:var(--ok)}.o{background:var(--lar);color:#111!important}.w{background:#fff;color:var(--ink)!important;border:1px solid #444}
+.fo{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--mut)}
+.fo svg{width:150px;height:180px;border:2px solid var(--ln);border-radius:10px;background:#fff;margin-bottom:4px}
+.big{font-size:min(13vw,78px);font-weight:800;letter-spacing:.08em;margin:10px 0;color:var(--azul)}
+.mut{color:var(--mut);font-size:15px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#aaa;margin-right:6px}
+.dot.on{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.nm{font-size:26px;font-weight:800;margin:6px 0}
+.cpf{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.cpf span{width:28px;height:40px;border:2px solid var(--ln);border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}
+.cpf span.sp{width:10px;border:0;background:none}
+.fim{flex:1;display:flex;align-items:center;justify-content:center;font-size:min(28vw,230px);font-weight:900;letter-spacing:.06em;color:var(--ok)}
+.kp{display:flex;flex-direction:column;gap:14px;justify-content:center}
+.lg{font-size:11px;font-weight:700;color:#9aa3b8;text-align:center;letter-spacing:.14em}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.k{height:52px;border:0;border-radius:12px;background:linear-gradient(180deg,#3d445a,var(--key));color:#fff;font:700 21px "Segoe UI",Arial;cursor:pointer;box-shadow:0 4px 0 #05070d,inset 0 1px 0 #ffffff2e}
+.k:active{transform:translateY(3px);box-shadow:0 1px 0 #05070d}
+.k:focus-visible{outline:3px solid var(--am);outline-offset:2px}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.k.a{height:58px;font-size:11px;letter-spacing:.04em;color:#111;box-shadow:0 4px 0 #05070d}
+.k.br{background:#fff}.k.co{background:var(--lar)}.k.cf{background:var(--ok);color:#fff}
+.rd{margin-top:6px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rd svg{width:90px;height:90px;background:#0b0d14;border-radius:14px;border:3px solid #4b5266}
+.tick small{display:block;font-size:12px;letter-spacing:.12em;color:var(--mut);font-weight:700}
+#tk{min-height:52px;margin:8px 0}
+.tk{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px;animation:tk 2.2s ease-in-out both}
+.tk .tn{font-size:30px;font-weight:800;text-transform:uppercase}
+.tk .tnum{font-size:30px;font-weight:800;color:var(--azul);letter-spacing:.06em}
+@keyframes tk{0%{opacity:0;transform:translateY(10px)}12%{opacity:1;transform:none}82%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-10px)}}
+@media (prefers-reduced-motion:reduce){.tk,.bx span.c{animation:none}}
+@media(max-width:760px){.dev,.mes{grid-template-columns:1fr}.bd{grid-template-columns:1fr}.fo{display:none}.cargo{font-size:28px}.tk .tn,.tk .tnum{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="dev" id="app"></div>
+<script>
+const CPFS={"07870215805":["ANDRE FRACASSI","SÃO PEDRO"],"32281963802":["ANDREIA CRISTIANE RISSETO FRACASSI","SÃO PEDRO"],"57750508864":["MIGUEL FRACASSI","SÃO PEDRO"],"12345678900":["MELINA FRACASSI","SÃO PEDRO"]};
+const PARTIDOS={"11":"PBF - Partido da Bola de Futebol","22":"PVR - Partido Vitória Régia","33":"PDC - Partido da Chuva","44":"PCE - Coelho Elétrico","55":"PMF - Meia Furada Unida","66":"PSV - Sofá Voador"};
+const SEN=[["113","Pão de Queijo Quente"],["223","Dona Nuvem"],["334","Trovão Tímido"],["445","Cenoura Veloz"]];
+const NOMES={
+ fed:[["1101","Bola de Futebol"],["2205","Vitória Régia"],["3312","Chuva Fina"],["4420","Coelho Hacker"],["5507","Meia Furada"],["6609","Tio Sofá"]],
+ est:[["11111","Bolinha de Gude"],["22222","Régia da Lagoa"],["33333","Garoa Marrenta"],["44444","Coelho Pipoca"],["55555","Meião Esperto"],["66666","Almofada Raivosa"]],
+ sen:SEN,
+ gov:[["11","Bola Murcha"],["22","Lírio d’Água"],["33","Temporal"],["44","Coelho Mestre"]],
+ pres:[["11","Bola de Futebol"],["22","Vitória Régia"],["33","Chuva"],["44","Coelho"],["55","Meia Furada"]]};
+const CARGOS=[["fed","Deputado Federal",4],["est","Deputado Estadual",5],["sen","Senador (1ª vaga)",3],["sen","Senador (2ª vaga)",3],["gov","Governador",2],["pres","Presidente",2]];
+const $=document.getElementById("app");
+let room=null,bc=null,CODE="",handlers={},keyFn=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function beep(f=880,d=120){try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+d/1000)}catch(e){}}
+function on(t,fn){handlers[t]=fn}
+function dispatch(t,d){if(handlers[t])handlers[t](d)}
+async function send(t,d){
+  try{bc&&bc.postMessage({t,d})}catch(e){}
+  try{room&&await room.emit(t,d||{})}catch(e){}
+}
+async function connect(code){
+  CODE=code;handlers={};
+  try{bc=new BroadcastChannel("tsf"+code);bc.onmessage=e=>dispatch(e.data.t,e.data.d)}catch(e){}
+  try{
+    const r=await claude.use("room");
+    if(r){room=await r.join("tsf-"+code);
+      ["hello","ack","liberar","iniciado","fim"].forEach(t=>room.on(t,m=>dispatch(t,(m&&m.data)||{})));}
+  }catch(e){console.error(e)}
+}
+document.addEventListener("keydown",e=>{if(keyFn&&keyFn(e))e.preventDefault()});
+function press(k){if(keyFn)keyFn({key:k})}
+function keypad(x=""){
+  const d=n=>`<button class="k" data-k="${n}" aria-label="${n}">${n}</button>`;
+  return `<div class="kp"><div class="dg">${[1,2,3,4,5,6,7,8,9].map(d).join("")}<span></span>${d(0)}<span></span></div>
+  <div class="acts"><button class="k a br" data-k="b">BRANCO</button><button class="k a co" data-k="Backspace">CORRIGE</button><button class="k a cf" data-k="Enter">CONFIRMA</button></div>
+  <div class="lg">URNA ELETRÔNICA TSF</div>${x}</div>`}
+function dev(top,body,m){
+  $.className="dev"+(m?" mes":"");
+  $.innerHTML=`<div class="scr"><div class="top${m?" m":""}">${top}</div>${body}</div>
+  ${keypad(m?`<div class="rd"><svg viewBox="0 0 90 90" aria-hidden="true">${DIGITAL("#6fd08c")}</svg><div class="lg">LEITOR BIOMÉTRICO</div></div>`:"")}`;
+  $.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{beep(500,50);press(b.dataset.k)});
+}
+function DIGITAL(c){let s="";for(let i=1;i<=7;i++)s+=`<path d="M${45-i*5} 70 V${40-i*2} a${i*5} ${i*5+4} 0 0 1 ${i*10} 0 V68" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="${i%2?"30 4":"50 3"}" stroke-linecap="round"/>`;return s}
+const FOTO=`<svg viewBox="0 0 100 120" aria-label="Foto do candidato"><rect width="100" height="120" fill="#dfe2da"/><circle cx="50" cy="45" r="21" fill="#8b9086"/><path d="M8 120c0-32 20-46 42-46s42 14 42 46z" fill="#8b9086"/></svg>`;
+
+function home(){
+  keyFn=null;
+  dev("JUSTIÇA ELEITORAL<span>TSF</span>",`<div class="bd one"><div><p class="nm" style="font-size:34px">Urna Eletrônica TSF</p><p class="mut">Escolha a função deste aparelho</p>
+  <div class="acts" style="max-width:420px;margin:18px auto 0;grid-template-columns:1fr 1fr"><button class="k a" id="m" style="background:#2c3b2c;color:#fff;font-size:15px">MESÁRIO</button><button class="k a" id="u" style="background:var(--azul);color:#fff;font-size:15px">URNA</button></div></div></div>`);
+  document.getElementById("m").onclick=mesario;document.getElementById("u").onclick=urna;
+}
+const mtop=(extra="")=>`TERMINAL DO MESÁRIO<span>${extra}</span>`;
+/* ---------- MESÁRIO ---------- */
+async function mesario(){
+  const code=String(Math.floor(1000+Math.random()*9000));
+  await connect(code);
+  let linked=false,cpf="",found=null,stage="cpf",msg="",n=0;
+  on("hello",()=>{linked=true;send("ack",{});render()});
+  on("iniciado",()=>{stage="votando";render()});
+  on("fim",()=>{stage="cpf";cpf="";found=null;msg="";render()});
+  function render(){
+    if(!linked){keyFn=null;
+      dev(mtop("1/5 · CONEXÃO"),`<div class="bd one"><div><p class="seu">Digite este código na urna</p><div class="big">TSF - ${code}</div><p class="mut"><span class="dot"></span>Aguardando a urna conectar…</p></div></div>`,1);return}
+    const t=` TSF - ${code}`;
+    if(stage==="cpf"){
+      const raw=cpf.padEnd(11,"·").split("");
+      const d=raw.map((c,i)=>`<span>${c==="·"?"":c}</span>${i==2||i==5||i==8?'<span class="sp"></span>':""}`).join("");
+      dev(mtop("2/5 · IDENTIFICAÇÃO"),`<div class="bd one"><div><p class="seu"><span class="dot on"></span>Urna conectada (${t.trim()})</p><p class="cargo" style="font-size:28px">Digite o CPF do eleitor</p><div class="cpf">${d}</div><div class="err">${msg}</div></div></div><div class="ft"><i class="g">CONFIRMA</i> pesquisar eleitor &nbsp; <i class="o">CORRIGE</i> apagar</div>`,1);
+      keyFn=e=>{if(/^\d$/.test(e.key)&&cpf.length<11){cpf+=e.key;msg="";render();return true}
+        if(e.key==="Backspace"){cpf=cpf.slice(0,-1);render();return true}
+        if(e.key==="Enter"){if(cpf.length<11){msg="CPF incompleto";render();return true}
+          if(CPFS[cpf]){found=CPFS[cpf];stage="achou";render()}else{msg="CPF não encontrado";cpf="";render()}return true}}
+    }else if(stage==="achou"){
+      dev(mtop("3/5 · CONFERÊNCIA"),`<div class="bd"><div><p class="seu">Eleitor encontrado</p><p class="nm">${esc(found[0])}</p><div class="inf"><div><b>Local:</b> ${esc(found[1])}</div><div><b>CPF:</b> ${cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4")}</div></div></div><div class="fo">${FOTO}Foto do eleitor</div></div><div class="ft"><i class="g">CONFIRMA</i> iniciar votação &nbsp; <i class="o">CORRIGE</i> voltar</div>`,1);
+      keyFn=e=>{if(e.key==="Enter"){stage="dedo";render();return true}if(e.key==="Backspace"){stage="cpf";cpf="";render();return true}}
+    }else if(stage==="dedo"){
+      dev(mtop("4/5 · BIOMETRIA"),`<div class="bd one"><div><p class="nm">${esc(found[0])}</p><svg viewBox="0 0 90 90" width="130" height="130" aria-hidden="true">${DIGITAL("#1b3a6b")}</svg><p style="font-size:21px;margin:6px 0">Coloque o dedo no leitor biométrico.</p></div></div><div class="ft"><i class="g">CONFIRMA</i> liberar a urna &nbsp; <i class="o">CORRIGE</i> voltar</div>`,1);
+      const lib=()=>{stage="liberando";beep(660,200);(function tick(){if(stage!=="liberando")return;send("liberar",{nome:found[0]});if(++n<20)setTimeout(tick,1500)})();render()};
+      keyFn=e=>{if(e.key==="Enter"){lib();return true}if(e.key==="Backspace"){stage="achou";render();return true}}
+    }else{
+      keyFn=null;
+      dev(mtop("5/5 · VOTAÇÃO"),`<div class="bd one"><div><p class="seu">Urna liberada</p><p class="nm">${esc(found[0])}</p><p class="mut"><span class="dot on"></span>Eleitor votando…<br>Aguardando o fim da votação.</p></div></div>`,1);
+    }
+  }
+  render();
+}
+/* ---------- URNA ---------- */
+function urna(){
+  let c="",msg="";
+  function render(){
+    const b=[0,1,2,3].map(i=>`<span class="${i===c.length?"c":""}">${c[i]||""}</span>`).join("");
+    dev("JUSTIÇA ELEITORAL<span>CONEXÃO</span>",`<div class="bd one"><div><p class="seu">Abra o terminal do mesário em outro aparelho e digite o código gerado</p><p class="cargo" style="margin-top:10px">TSF -</p><div class="bx" style="justify-content:center">${b}</div><div class="err">${msg}</div></div></div><div class="ft"><i class="g">CONFIRMA</i> conectar &nbsp; <i class="o">CORRIGE</i> apagar</div>`)}
+  render();
+  keyFn=e=>{if(/^\d$/.test(e.key)&&c.length<4){c+=e.key;msg="";render();return true}
+    if(e.key==="Backspace"){c=c.slice(0,-1);render();return true}
+    if(e.key==="Enter"){if(c.length<4){msg="Código incompleto";render()}else ligar(c);return true}}
+}
+async function ligar(code){
+  keyFn=null;
+  dev("JUSTIÇA ELEITORAL<span>CONEXÃO</span>",`<div class="bd one"><div><p class="seu">Conectando ao terminal</p><div class="big">TSF - ${code}</div></div></div>`);
+  await connect(code);
+  let ok=false,tries=0,voting=false;
+  on("ack",()=>{ok=true;espera()});
+  on("liberar",d=>{if(voting)return;voting=true;send("iniciado",{});votar(d.nome||"ELEITOR")});
+  const hi=()=>{if(ok)return;send("hello",{});if(++tries<30)setTimeout(hi,2000);else{dev("JUSTIÇA ELEITORAL<span>ERRO</span>",`<div class="bd one"><div><p class="nm">Não conectou</p><p class="mut">Confira o código e se o terminal do mesário está aberto.</p></div></div><div class="ft"><i class="g">CONFIRMA</i> tentar de novo</div>`);keyFn=e=>{if(e.key==="Enter"){urna();return true}}}};
+  hi();
+  function espera(){voting=false;keyFn=null;
+    dev(`JUSTIÇA ELEITORAL<span>TSF - ${code}</span>`,`<div class="bd one"><div><p class="nm" style="font-size:34px">Aguardando eleitor</p><p class="mut"><span class="dot on"></span>Conectada ao terminal do mesário.<br>Aguarde a liberação.</p></div></div>`)}
+  window.__espera=espera;
+}
+function votar(nome){
+  let i=0,dig="",lista=[],msg="",br=false,tk=null;
+  const cand=(k,n)=>NOMES[k].find(x=>x[0]===n);
+  function stopTk(){if(tk){clearInterval(tk);tk=null}}
+  function startTk(){stopTk();
+    const L=NOMES[CARGOS[i][0]].filter(x=>!(i===3&&x[0]===lista[2]));let j=0;
+    const show=()=>{const e=document.getElementById("tk");if(!e){stopTk();return}
+      const x=L[j%L.length];e.innerHTML=`<div class="tk"><span class="tn">${esc(x[1])}</span><span class="tnum">- ${x[0]}</span></div>`;j++};
+    show();tk=setInterval(show,2200)}
+  const TICK=t=>`<div class="tick"><small>CANDIDATOS A ${t.toUpperCase()}</small><div id="tk"></div><small>DIGITE O NÚMERO DO SEU CANDIDATO</small></div>`;
+  function render(){
+    const [k,titulo,len]=CARGOS[i];
+    const bx=Array.from({length:len},(_,j)=>`<span>${dig[j]||""}</span>`).join("");
+    let info="",foto="";
+    if(br)info=`<div class="branco">VOTO EM BRANCO</div>`;
+    else if(dig.length===0)info=TICK(titulo);
+    else if(dig.length===len){
+      const x=cand(k,dig);
+      if(x){info=`<div><b>Nome:</b> ${esc(x[1])}</div><div><b>Partido:</b> ${esc(PARTIDOS[dig.slice(0,2)]||"")}</div><div><b>Número:</b> ${dig}</div>`;foto=FOTO}
+      else info=`<div class="nulo">NÚMERO ERRADO<br>CANDIDATO INEXISTENTE</div><div class="nulo" style="margin-top:6px">VOTO NULO</div>`}
+    dev(`JUSTIÇA ELEITORAL<span>ELEITOR: ${esc(nome)}</span>`,`<div class="bd"><div><p class="seu">SEU VOTO PARA</p><p class="cargo">${titulo}</p>${br?"":`<div class="bx">${bx}</div>`}<div class="inf">${info}</div><div class="err">${msg}</div></div>
+    <div class="fo">${foto?foto+(k==="sen"?"Senador":titulo.split(" (")[0]):""}</div></div>
+    <div class="ft">Aperte a tecla:<br><i class="g">VERDE</i> para CONFIRMAR &nbsp; <i class="w">BRANCO</i> para VOTAR EM BRANCO &nbsp; <i class="o">LARANJA</i> para CORRIGIR</div>`);
+    if(!br&&dig.length===0)startTk();else stopTk()}
+  function avancar(v){lista.push(v);beep(1000,250);dig="";msg="";br=false;i++;if(i>=CARGOS.length)fimVoto();else render()}
+  function fimVoto(){
+    keyFn=null;stopTk();dev(`JUSTIÇA ELEITORAL<span>ELEITOR: ${esc(nome)}</span>`,`<div class="fim">FIM</div><div class="ft" style="text-align:center">VOTOU</div>`);
+    beep(1200,900);setTimeout(()=>{send("fim",{});window.__espera&&window.__espera()},6000)}
+  keyFn=e=>{
+    const len=CARGOS[i][2];
+    if(/^\d$/.test(e.key)&&dig.length<len&&!br){dig+=e.key;msg="";render();return true}
+    if(e.key==="Backspace"){dig="";br=false;msg="";render();return true}
+    if(e.key==="b"||e.key==="B"){if(dig.length){msg="Corrija antes de votar em branco"}else br=true;render();return true}
+    if(e.key==="Enter"){
+      if(br){avancar("branco");return true}
+      if(dig.length===len){
+        const ok=cand(CARGOS[i][0],dig);
+        if(ok&&CARGOS[i][0]==="sen"&&i===3&&dig===lista[2]){msg="Candidato já escolhido na 1ª vaga";dig="";render();return true}
+        avancar(ok?dig:"nulo")}
+      return true}
+  };
+  render();
+}
+urna();
+</script>
+</body>
+</html>
