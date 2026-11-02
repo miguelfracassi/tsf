@@ -1,0 +1,27 @@
+Urna Eletrônica TSF (brincadeira de família)
+
+Arquivos:
+- mesario.html: terminal do mesário (gera o código de 4 dígitos, pede CPF e biometria).
+- urna.html: a urna (digite o código TSF - ____ e vote).
+- index.html: tela inicial com os dois botões.
+
+Abra mesario.html em um aparelho e urna.html no outro.
+
+CONEXÃO: mesário e urna se falam pela internet (relé público ntfy.sh), então
+funcionam em aparelhos diferentes, abrindo os arquivos de qualquer lugar.
+Os dois aparelhos precisam estar com internet. Em abas do mesmo navegador
+também conecta direto, sem internet.
+
+CPFs, candidatos e partidos ficam no começo do <script> de cada página.
+
+NOVIDADES:
+- Visual simples, preto e branco.
+- Em cada cargo, antes de digitar, a tela mostra os candidatos um por vez
+  (NOME - 0000), com fade, até o eleitor começar a digitar o número.
+
+CANDIDATOS COM FOTO:
+- Presidente: 22 Flávio Bolsonaro (PL), 13 Lula (PT), 14 Renan Santos (Missão) e 23 André Fracassi (Democrata).
+- Deputado Federal: 1885 Melina Fracassi (BUP, sem foto), primeira da lista, junto dos fictícios.
+- Governador: 10 Tarcísio (Republicanos), 13 Haddad (PT) e 70 Miguel Fracassi (BUP, sem foto).
+- Para trocar/adicionar, edite as listas "pres" e "gov" no começo do <script>:
+  [número, nome, partido, foto].
